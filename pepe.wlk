@@ -1,3 +1,4 @@
+//PERSONAS
 object pepe {
     var categoria = null
 
@@ -7,16 +8,9 @@ object pepe {
 
     var faltas = 0
 
-	var sueldo = 0
 
-    var sn = 0
-
-    var br = 0
-
-    var bp = 0
-
-    method faltar() {
-      faltas = faltas + 1
+    method faltar(_faltas) {
+      faltas = faltas + _faltas
     }
 
     method faltas() {
@@ -24,31 +18,145 @@ object pepe {
     }
 
     method sueldoNeto() {
-      return sn
+      return categoria.sueldoPorCategoria()
     }
 
     method presentismo() {
       return presentismo
     }
-
+    
+    method resultado() {
+      return resultado
+    }
 
     method sueldo() {
-      sueldo = sueldo + sn + br + bp
+      return self.sueldoNeto() + self.valorPorResultado() + self.valorPorPresentismo()
     }
     
-    method categoria(_categoria) {
+    method categoriaAsignada(_categoria) {
       categoria = _categoria
-      sn = categoria.sueldoPorCategoria()
     }
  
-    method resultado(_resultado){
+    method bonoPorResultado(_resultado){
       resultado = _resultado
-      br = _resultado.calculoPorResultado()
     }
 
     method bonoPorPresentismo(_presentismo) {
       presentismo = _presentismo
-      bp = _presentismo.calculoPorPresentismo()
+    }
+
+    method valorPorResultado() {
+      return resultado.calculoPorResultado(self)
+    }
+
+    method valorPorPresentismo() {
+      return presentismo.calculoPorPresentismo(self)
+    }
+    
+}
+
+object moria {
+    var categoria = null
+
+    var resultado = null
+
+    method sueldoNeto() {
+      return categoria.sueldoPorCategoria()* 1.3
+    }
+
+    method resultado() {
+      return resultado
+    }
+
+    method sueldo() {
+      return self.sueldoNeto()  + self.valorPorResultado()
+    }
+    
+    method categoriaAsignada(_categoria) {
+      categoria = _categoria
+    }
+ 
+    method bonoPorResultado(_resultado){
+      resultado = _resultado
+    }
+
+    method valorPorResultado() {
+      return resultado.calculoPorResultado(self)
+    }
+
+}
+
+object roque {
+    var resultado = null
+
+    method sueldoNeto() {
+      return 28000
+    }
+    
+    method resultado() {
+      return resultado
+    }
+
+    method sueldo() {
+      return self.sueldoNeto() + self.valorPorResultado() + 9000
+    }
+    
+ 
+    method bonoPorResultado(_resultado){
+      resultado = _resultado
+    }
+
+    method valorPorResultado() {
+      return resultado.calculoPorResultado(self)
+    }
+
+    
+}
+
+object ernesto {
+
+    var presentismo = null
+
+    var faltas = 0
+
+    var compañerx = moria
+
+    method compañerx(){
+      return compañerx
+    }
+
+    method asignarCompañerx(_compañerx){
+      compañerx = _compañerx
+    }
+
+    method faltar(_faltas) {
+      faltas = faltas + _faltas
+    }
+
+    method faltas() {
+      return faltas
+    }
+
+    method sueldoNeto() {
+      return compañerx.sueldoNeto()
+    }
+
+    method presentismo() {
+      return presentismo
+    }
+    
+
+    method sueldo() {
+      return self.sueldoNeto() + self.valorPorPresentismo()
+    }
+    
+
+    method bonoPorPresentismo(_presentismo) {
+      presentismo = _presentismo
+    }
+    
+    method valorPorPresentismo() {
+      return presentismo.calculoPorPresentismo(self)
     }
     
 }
@@ -71,13 +179,47 @@ object gerente {
   }
 }
 
+object vendedor {
+  var muchasVentas = false
+  const sueldo = 16000
+
+  method sueldoPorCategoria() {
+    if (muchasVentas)  {
+       return sueldo * 1.25
+       } else  {
+       return sueldo
+       }
+  }
+
+  method activarAumentoPorMuchasVentas() {
+     muchasVentas = true
+  }
+  
+  method desactivarAumentoPorMuchasVentas() {
+     muchasVentas = false
+  }
+}
+
+object medioTiempo {
+
+  var categoriaBase = null
+
+  method categoriaBase(categoria) {
+    categoriaBase = categoria
+  }
+
+  method sueldoPorCategoria() {
+    return categoriaBase.sueldoPorCategoria() * 0.5
+  }
+}
+
 //RESULTADOS
 
 object porcentaje {
   const porcentaje = 0.1
 
-  method calculoPorResultado() {
-    return pepe.sueldoNeto() * porcentaje
+  method calculoPorResultado(empleado) {
+    return empleado.sueldoNeto() * porcentaje
   }
   
 }
@@ -85,7 +227,7 @@ object porcentaje {
 object montoFijo {
   const monto = 800
 
-  method calculoPorResultado() {
+  method calculoPorResultado(empleado) {
     return monto
   }
   
@@ -94,49 +236,54 @@ object montoFijo {
 object nulo {
   const monto = 0
 
-  method calculoPorResultado() {
+  method calculoPorResultado(empleado) {
     return monto
   }
-  
+
+  method calculoPorPresentismo(empleado) { 
+    return monto
+  }
 }
 
 //PRESENTISMO
 
-object normal{
-   var bono = 0
+object bonoNormal{
+   
 
-   method calculoPorPresentismo() {
-    if (pepe.faltas() == 0) {
-      bono = 2000
-    } else if (pepe.faltas() == 1) {
-      bono = 1000
+   method calculoPorPresentismo(empleado) {
+    if (empleado.faltas() == 0) {
+      return  2000
+    } else if (empleado.faltas() == 1) {
+      return  1000
     } else {
-      bono = 0
+      return  0
     }
    }
 }
 
 object ajuste{
-   var bono = 0
+   
 
-   method calculoPorPresentismo() {
-    if (pepe.faltas() == 0) {
-      bono = 100
+   method calculoPorPresentismo(empleado) {
+    if (empleado.faltas() == 0) {
+      return 100
     } else {
-      bono = 0
+      return 0
     }
    }
 }
 
 object demagógico{
-   var bono = 0
+   
 
-   method calculoPorPresentismo() {
-    if (pepe.faltas() == 0) {
-      bono = 100
+   method calculoPorPresentismo(empleado) {
+    if (empleado.faltas() == 0) {
+      return  100
     } else {
-      bono = 0
+      return 0
     }
    }
 }
+
+
 
