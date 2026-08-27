@@ -108,6 +108,11 @@ Agregar dos personas más, según lo que se detalla a continuación.
   - los mensajes que componen ese tipo
   - los **emisores** de los mensajes polimórficos
     
+Compañerx : objetos los cuales respondian a sueldoNeto(), y el emisor es "ernesto"
+Categoria : objetos que respondian a sueldoPorCategoria(), y eran llamados por los obj Compañerx
+Resultado: objetos los cuales respondian a calculoPorResultado(),  y eran llamados por los obj Compañerx
+Presentismo: objetos los cuales respondian a calculoPorPresentismo() y eran llamados por los obj Compañerx
+
 - Dibujar un diagrama estático donde se vea la relación entre los objetos y los tipos polimórficos
 Se encuentra en el archivo "pepe.drawio.png"
 - Encontrar (en toda la solución) un mensaje que sea una orden y otro que sea una consulta
